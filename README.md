@@ -6,7 +6,7 @@ I run a grocery shop. This is what it would look like online — a full-stack bu
 with a React storefront, a Spring Boot API, PostgreSQL, and a real admin panel
 for managing stock and orders.
 
-[![CI](https://github.com/onkarraut117-debug/rautkart/actions/workflows/ci.yml/badge.svg)](https://github.com/onkarraut117-debug/rautkart/actions/workflows/ci.yml)
+[![CI](https://github.com/onkarraut18/rautkart/actions/workflows/ci.yml/badge.svg)](https://github.com/onkarraut18/rautkart/actions/workflows/ci.yml)
 ![Java](https://img.shields.io/badge/Java-17-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-brightgreen)
 ![React](https://img.shields.io/badge/React-18-blue)
