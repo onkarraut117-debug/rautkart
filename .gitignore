@@ -21,3 +21,6 @@ Thumbs.db
 *.local
 .claude/
 .idea/
+
+# Personal learning notes - local only, not part of the repo
+notes/
