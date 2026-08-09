@@ -14,8 +14,44 @@
     <groupId>in.rautkart</groupId>
     <artifactId>rautkart-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>rautkart-backend</name>
-    <description>RautKart - online grocery store backend</description>
+    <packaging>jar</packaging>
+
+    <name>RautKart Backend</name>
+    <description>
+        REST API for RautKart, an online grocery store. Spring Boot and PostgreSQL,
+        with JWT authentication, a server-side cart, stock-reserving checkout,
+        Razorpay test-mode payments and an admin panel.
+    </description>
+    <url>https://github.com/onkarraut18/rautkart</url>
+    <inceptionYear>2026</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>onkarraut18</id>
+            <name>Onkar Raut</name>
+            <url>https://github.com/onkarraut18</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/onkarraut18/rautkart.git</connection>
+        <developerConnection>scm:git:git@github.com:onkarraut18/rautkart.git</developerConnection>
+        <url>https://github.com/onkarraut18/rautkart</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/onkarraut18/rautkart/issues</url>
+    </issueManagement>
 
     <properties>
         <java.version>17</java.version>
