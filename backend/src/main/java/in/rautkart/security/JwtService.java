@@ -5,6 +5,8 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,12 @@ import java.util.Map;
 @Service
 public class JwtService {
 
+    private static final Logger log = LoggerFactory.getLogger(JwtService.class);
+
+    /** The placeholder committed to the repository, so it can be recognised. */
+    private static final String PUBLIC_PLACEHOLDER_SECRET =
+            "cmF1dGthcnQtbG9jYWwtZGV2LXNlY3JldC1jaGFuZ2UtbWUtcGxlYXNlLTEyMzQ1Ng==";
+
     private final SecretKey key;
     private final long expirationMs;
 
@@ -22,6 +30,15 @@ public class JwtService {
                       @Value("${rautkart.jwt.expiration-ms}") long expirationMs) {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
         this.expirationMs = expirationMs;
+
+        if (PUBLIC_PLACEHOLDER_SECRET.equals(secret)) {
+            log.warn("======================================================================");
+            log.warn("  Running with the PUBLIC placeholder JWT secret from the repository.");
+            log.warn("  Anyone who has read the source can forge tokens, including admin");
+            log.warn("  tokens. Fine locally - never expose this to a network.");
+            log.warn("  Set JWT_SECRET to a private value:  openssl rand -base64 32");
+            log.warn("======================================================================");
+        }
     }
 
     public String generateToken(AuthUser user) {

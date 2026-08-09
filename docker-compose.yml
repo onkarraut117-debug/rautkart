@@ -12,7 +12,7 @@ services:
     environment:
       POSTGRES_DB: rautkart
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-rautkart}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-local_dev_only}
     volumes:
       # Named volume, so the catalogue and any orders survive a restart.
       # "docker compose down -v" is what wipes it.
@@ -44,7 +44,7 @@ services:
       # "db" is the service name above; Compose resolves it on its own network.
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/rautkart
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-rautkart}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-local_dev_only}
       JWT_SECRET: ${JWT_SECRET:-cmF1dGthcnQtbG9jYWwtZGV2LXNlY3JldC1jaGFuZ2UtbWUtcGxlYXNlLTEyMzQ1Ng==}
       # Empty keys keep checkout in mock-payment mode. Supply real test keys
       # in a .env file to exercise the Razorpay flow.

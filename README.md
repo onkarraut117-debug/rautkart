@@ -212,6 +212,15 @@ Everything has a working default; override with environment variables.
 Store rules live in `application.properties`: `rautkart.delivery-fee` (₹30) and
 `rautkart.free-delivery-above` (₹500).
 
+Copy `.env.example` to `.env` to set any of these — `.env` is gitignored.
+
+> **Security note.** The JWT secret checked into this repository is a **public
+> placeholder** so a fresh clone runs. Anyone who has read the source knows it
+> and could forge tokens, including admin ones — the app logs a warning at
+> startup when it is in use. The seeded demo accounts are equally public. Both
+> are fine on localhost; set `JWT_SECRET` and remove the demo users before
+> putting this on a network.
+
 ---
 
 ## Tests
