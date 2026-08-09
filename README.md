@@ -130,7 +130,35 @@ Two decisions worth calling out:
 
 ## Running it locally
 
-You need Java 17, Node 20+, PostgreSQL, and Docker if you want to run the tests.
+### The quick way: Docker Compose
+
+One command, and the only thing you need installed is Docker:
+
+```bash
+git clone https://github.com/onkarraut18/rautkart
+cd rautkart
+docker compose up --build
+```
+
+Open <http://localhost:5173>. That starts PostgreSQL, the Spring Boot API and
+an nginx-served production build of the React app, wired together on a private
+network. The database is seeded on first boot.
+
+```bash
+docker compose down       # stop everything
+docker compose down -v    # stop, and delete the database volume too
+```
+
+Ports are configurable if something already holds them:
+
+```bash
+FRONTEND_PORT=5174 BACKEND_PORT=8081 docker compose up
+```
+
+### The manual way
+
+If you would rather run the pieces yourself, you need Java 17, Node 20+ and
+PostgreSQL (plus Docker if you want to run the tests).
 
 **1. Create the database**
 

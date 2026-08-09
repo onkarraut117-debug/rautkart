@@ -1,0 +1,81 @@
+# Runs the whole of RautKart - database, API and storefront - with one command:
+#
+#     docker compose up --build
+#
+# Then open http://localhost:5173. Nothing needs to be installed locally except
+# Docker itself: no JDK, no Node, no PostgreSQL.
+
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: rautkart-db
+    environment:
+      POSTGRES_DB: rautkart
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-rautkart}
+    volumes:
+      # Named volume, so the catalogue and any orders survive a restart.
+      # "docker compose down -v" is what wipes it.
+      #
+      # Mounted at /var/lib/postgresql, NOT /var/lib/postgresql/data: the
+      # Postgres 18 images keep data in a version-named subdirectory so that
+      # pg_upgrade can work across a single mount point. Mounting the old path
+      # makes the container refuse to start.
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      # PostgreSQL accepts connections a moment before it is genuinely ready.
+      # Without this the backend starts too early and dies on first connect.
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rautkart"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    # Exposed only so you can inspect it with psql or pgAdmin from the host.
+    # The backend does not need this - it reaches the database over the
+    # internal network as "db".
+    ports:
+      - "${DB_PORT:-5433}:5432"
+
+  backend:
+    build:
+      context: ./backend
+    container_name: rautkart-backend
+    environment:
+      # "db" is the service name above; Compose resolves it on its own network.
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/rautkart
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-rautkart}
+      JWT_SECRET: ${JWT_SECRET:-cmF1dGthcnQtbG9jYWwtZGV2LXNlY3JldC1jaGFuZ2UtbWUtcGxlYXNlLTEyMzQ1Ng==}
+      # Empty keys keep checkout in mock-payment mode. Supply real test keys
+      # in a .env file to exercise the Razorpay flow.
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-}
+      # nginx serves the browser, so requests arrive same-origin. This only
+      # matters if the frontend is ever hosted somewhere else.
+      RAUTKART_CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: rautkart-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      # Same port as the Vite dev server, so bookmarks keep working.
+      # Override with FRONTEND_PORT if something already holds 5173.
+      - "${FRONTEND_PORT:-5173}:80"
+
+volumes:
+  pgdata:
