@@ -48,7 +48,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/actuator/health/**").permitAll()
                         .requestMatchers(HttpMethod.POST,
-                                "/api/auth/register", "/api/auth/login", "/api/auth/admin/login").permitAll()
+                                "/api/auth/register", "/api/auth/login", "/api/auth/admin/login",
+                                "/api/auth/forgot-password", "/api/auth/reset-password").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products/**", "/api/categories/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

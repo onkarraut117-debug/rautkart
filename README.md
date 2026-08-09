@@ -47,6 +47,8 @@ mode**; no real money moves.
 - Checkout with a saved or new address, online payment or cash on delivery
 - Order history with a delivery progress tracker, and cancel while it is still
   unpacked
+- Forgotten-password reset by single-use, time-limited link, and changing a
+  password while signed in
 
 **For the shop**
 
@@ -72,6 +74,10 @@ mode**; no real money moves.
 Order history, with the status of each order:
 
 ![Orders](docs/screenshots/06-orders.png)
+
+| Forgotten password | Account & password change |
+|---|---|
+| ![Forgot password](docs/screenshots/11-forgot-password.png) | ![Account](docs/screenshots/12-account.png) |
 
 ### Admin panel
 
@@ -209,8 +215,20 @@ Everything has a working default; override with environment variables.
 | `RAZORPAY_KEY_ID` | *(empty)* | Test key id; empty enables mock payments |
 | `RAZORPAY_KEY_SECRET` | *(empty)* | Test key secret |
 
-Store rules live in `application.properties`: `rautkart.delivery-fee` (₹30) and
-`rautkart.free-delivery-above` (₹500).
+Store rules live in `application.properties`: `rautkart.delivery-fee` (₹30),
+`rautkart.free-delivery-above` (₹500), and the password-reset settings
+`ttl-minutes` (30) and `max-per-hour` (5).
+
+**Password reset without a mail server.** This project sends no email, so the
+reset link is written to the application log:
+
+```
+Password reset link for customer@rautkart.in: /reset-password?token=WZuNKe...
+```
+
+Set `EXPOSE_RESET_TOKEN=true` to also return the token in the API response,
+which makes the flow clickable end to end while developing. It is off by
+default, and turning it on in production would let anyone reset any account.
 
 Copy `.env.example` to `.env` to set any of these — `.env` is gitignored.
 
@@ -241,6 +259,7 @@ while hiding them.
 | `CatalogApiTest` | Search, combined filters, LIKE wildcard escaping, server-derived fields |
 | `CartAndCheckoutTest` | Totals, the delivery threshold on both sides, stock guard, checkout side effects |
 | `OrderLifecycleTest` | Cancel restores stock, cannot cancel once packed, COD settles on delivery, one customer cannot read another's order |
+| `PasswordResetTest` | Unknown emails get an identical reply, tokens are single-use, expire, and are invalidated by a newer one or by a password change; only a digest is stored |
 
 CI runs the suite and the frontend build on every push.
 
@@ -251,6 +270,7 @@ CI runs the suite and the frontend build on every push.
 **Public**
 ```
 POST   /api/auth/register        POST /api/auth/login      POST /api/auth/admin/login
+POST   /api/auth/forgot-password POST /api/auth/reset-password
 GET    /api/categories
 GET    /api/products?q=&category=&maxPrice=&inStockOnly=&sort=&page=&size=
 GET    /api/products/featured    GET  /api/products/{slug}
@@ -258,7 +278,7 @@ GET    /api/products/featured    GET  /api/products/{slug}
 
 **Customer** (JWT)
 ```
-GET    /api/auth/me
+GET    /api/auth/me              POST /api/auth/change-password
 GET    /api/cart                 POST /api/cart/items
 PUT    /api/cart/items/{id}      DELETE /api/cart/items/{id}    DELETE /api/cart
 GET    /api/addresses            POST /api/addresses

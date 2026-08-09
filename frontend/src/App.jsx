@@ -11,6 +11,9 @@ import Orders from './pages/Orders.jsx'
 import OrderDetail from './pages/OrderDetail.jsx'
 import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
+import ForgotPassword from './pages/ForgotPassword.jsx'
+import ResetPassword from './pages/ResetPassword.jsx'
+import Account from './pages/Account.jsx'
 import NotFound from './pages/NotFound.jsx'
 import AdminLogin from './pages/admin/AdminLogin.jsx'
 import AdminLayout from './pages/admin/AdminLayout.jsx'
@@ -29,7 +32,17 @@ export default function App() {
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/cart"
             element={

@@ -55,6 +55,12 @@ export default function Navbar() {
             </NavLink>
           )}
 
+          {user && (
+            <NavLink to="/account" className={linkClass}>
+              Account
+            </NavLink>
+          )}
+
           {isAdmin && (
             <NavLink to="/admin" className={linkClass}>
               Admin
