@@ -45,12 +45,7 @@ export default function Login() {
           </div>
 
           <div>
-            <div className="flex items-baseline justify-between">
-              <label className="text-sm font-medium text-stone-700">Password</label>
-              <Link to="/forgot-password" className="text-xs font-semibold text-brand-700 hover:underline">
-                Forgot password?
-              </Link>
-            </div>
+            <label className="text-sm font-medium text-stone-700">Password</label>
             <input
               type="password"
               required
@@ -58,6 +53,11 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
             />
+            <div className="mt-1.5 text-right">
+              <Link to="/forgot-password" className="text-xs font-semibold text-brand-700 hover:underline">
+                Forgot password?
+              </Link>
+            </div>
           </div>
 
           {error && (
