@@ -248,7 +248,7 @@ cd backend
 mvn test          # needs Docker running
 ```
 
-**35 integration tests**, run against a real PostgreSQL started by
+**46 integration tests**, run against a real PostgreSQL started by
 Testcontainers — not H2. That matters: both of the significant bugs found during
 the build were PostgreSQL-specific, and an in-memory stand-in would have passed
 while hiding them.
