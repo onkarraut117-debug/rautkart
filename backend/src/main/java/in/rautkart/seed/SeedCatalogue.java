@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * The demo grocery catalogue. Prices are rough Indian retail prices so the
- * storefront looks like a real neighbourhood kirana shop rather than lorem ipsum.
+ * storefront is stocked like the real shop rather than with lorem ipsum.
  *
  * Columns: name, description, categorySlug, price, mrp, unit, stock, emoji
  */

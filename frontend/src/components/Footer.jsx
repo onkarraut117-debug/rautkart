@@ -12,7 +12,7 @@ export default function Footer() {
             </span>
           </div>
           <p className="mt-3 max-w-xs text-sm text-stone-500">
-            The neighbourhood kirana shop, online. Fresh stock, fair prices, delivered to your door.
+            Our grocery shop, now online. The same stock we sell over the counter, delivered to your door.
           </p>
         </div>
 

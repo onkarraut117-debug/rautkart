@@ -19,7 +19,6 @@ Thumbs.db
 # Local secrets - never commit real Razorpay keys or DB passwords
 .env
 *.local
-.claude/
 .idea/
 
 # Personal learning notes - local only, not part of the repo

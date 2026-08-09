@@ -29,7 +29,7 @@ export default function Home() {
               Free delivery on orders over ₹500
             </span>
             <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-stone-900 sm:text-5xl">
-              Your neighbourhood kirana,{' '}
+              Our shop,{' '}
               <span className="text-brand-600">now a tap away</span>
             </h1>
             <p className="mt-4 text-lg text-stone-600">
